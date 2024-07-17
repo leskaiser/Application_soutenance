@@ -30,14 +30,16 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * Exception To Page 404
+     * Exception Page
      */
-    public function render($request, Throwable $exception)
+    public function render($request, Throwable $e)
     {
-        if ($exception instanceof NotFoundHttpException) {
-            return response()->view('errors.error-404', [], 404);
-        }
+        $errorMessage = $e->getMessage();
+        $errorCode = $e->getCode();
 
-        return parent::render($request, $exception);
+        return response()->view('errors.error-404', [
+            'errorMessage' => $errorMessage,
+            'errorCode' => $errorCode
+        ], 500);
     }
 }
